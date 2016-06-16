@@ -1,5 +1,6 @@
 FROM ubuntu:latest
 RUN apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -y openssh-server nano \
     && apt-get autoremove -y \
     && apt-get clean -y \
