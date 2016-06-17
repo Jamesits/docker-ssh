@@ -12,6 +12,7 @@ RUN sed -i -r 's/.?UseDNS\syes/UseDNS no/' /etc/ssh/sshd_config \
     && sed -i -r 's/.?UsePAM.+/UsePAM no/' /etc/ssh/sshd_config \
     && sed -i -r 's/.?ChallengeResponseAuthentication.+/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config \
     && sed -i -r 's/.?PermitRootLogin.+/PermitRootLogin yes/' /etc/ssh/sshd_config \
+    && sed -i -r 's/.?PrintMotd.+/PrintMotd yes/' /etc/ssh/sshd_config \
     && echo -e "StrictHostKeyChecking no" >> /etc/ssh/ssh_config \
 # SSH login fix. Otherwise user is kicked off after login
     && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
