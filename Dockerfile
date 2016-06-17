@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y openssh-server bzip2 nano vim less mysql-client net-tools dnsutils\
+    && apt-get install -y openssh-server bzip2 nano vim less mysql-client net-tools dnsutils htop\
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
