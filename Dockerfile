@@ -21,8 +21,11 @@ RUN sed -i -r 's/.?UseDNS\syes/UseDNS no/' /etc/ssh/sshd_config \
     && (yes | ssh-keygen -q -b 1024 -N '' -t dsa -f /etc/ssh/ssh_host_dsa_key) \
     && (yes | ssh-keygen -q -b 521 -N '' -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key) \
     && mkdir -p /var/run/sshd \
-    && chmod 0755 /var/run/sshd
+    && chmod 0755 /var/run/sshd \
+# Add keyserver URL
+    && echo "{\"URL\": \"https://github.com/%s.keys\"}" > /etc/ssh/ssh_import_id
 
+# Change APT mirror
 RUN printf " \
 deb http://mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse \n\
 deb http://mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse \n\
@@ -36,10 +39,8 @@ deb-src http://mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted unive
 deb-src http://mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse \n\
 " >/etc/apt/sources.list
 
-ENV GITHUB_USERNAME Jamesits
-    
-RUN echo "{\"URL\": \"https://github.com/%s.keys\"}" > /etc/ssh/ssh_import_id \
-    && ssh-import-id $GITHUB_USERNAME
+COPY docker-entrypoint.sh /entrypoint.sh
 
 EXPOSE 22
-CMD /usr/sbin/sshd -Dde
+ENTRYPOINT /entrypoint.sh
+CMD [ "/usr/sbin/sshd", "-De" ]
